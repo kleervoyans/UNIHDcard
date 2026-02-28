@@ -74,6 +74,14 @@ static void append_hex_bytes(const uint8_t* bytes, size_t len, char* out, size_t
     }
 }
 
+static void format_optional_byte(char* out, size_t out_size, bool present, uint8_t value) {
+    if(present) {
+        snprintf(out, out_size, "%02X", value);
+    } else {
+        snprintf(out, out_size, "n/a");
+    }
+}
+
 void unihd_card_format_summary(const UniHdCardInfo* info, char* out, size_t out_size) {
     if(!info->loaded) {
         snprintf(out, out_size, "No card loaded.");
@@ -81,7 +89,14 @@ void unihd_card_format_summary(const UniHdCardInfo* info, char* out, size_t out_
     }
 
     char uid[64] = {0};
+    char ta1[8] = {0};
+    char tb1[8] = {0};
+    char tc1[8] = {0};
+
     append_hex_bytes(info->uid, info->uid_len, uid, sizeof(uid));
+    format_optional_byte(ta1, sizeof(ta1), info->has_ta1, info->ats_ta1);
+    format_optional_byte(tb1, sizeof(tb1), info->has_tb1, info->ats_tb1);
+    format_optional_byte(tc1, sizeof(tc1), info->has_tc1, info->ats_tc1);
 
     snprintf(
         out,
@@ -90,8 +105,9 @@ void unihd_card_format_summary(const UniHdCardInfo* info, char* out, size_t out_
         "ATQA: %02X %02X\n"
         "SAK: %02X\n"
         "Apps: %lu\n"
-        "Free: %s\n"
+        "Free bytes: %s\n"
         "ATS TL/T0: %02X/%02X\n"
+        "ATS TA1/TB1/TC1: %s/%s/%s\n"
         "HW v%u.%u storage 0x%02X\n"
         "SW v%u.%u storage 0x%02X",
         uid,
@@ -99,9 +115,12 @@ void unihd_card_format_summary(const UniHdCardInfo* info, char* out, size_t out_
         info->atqa[1],
         info->sak,
         (unsigned long)info->app_count,
-        info->has_free_memory ? "present" : "n/a",
+        info->has_free_memory ? "available" : "n/a",
         info->ats_tl,
         info->ats_t0,
+        ta1,
+        tb1,
+        tc1,
         info->hw_major,
         info->hw_minor,
         info->hw_storage,

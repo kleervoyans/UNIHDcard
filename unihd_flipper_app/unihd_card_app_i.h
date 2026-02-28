@@ -25,6 +25,7 @@
 #include "scenes/about_scene.h"
 
 typedef struct {
+    Gui* gui;
     SceneManager* scene_manager;
     ViewDispatcher* view_dispatcher;
     Submenu* submenu;

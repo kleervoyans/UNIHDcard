@@ -51,6 +51,7 @@ static App* app_alloc(void) {
     App* app = malloc(sizeof(App));
     memset(app, 0, sizeof(App));
 
+    app->gui = furi_record_open(RECORD_GUI);
     app->scene_manager = scene_manager_alloc(&scene_handlers, app);
     app->view_dispatcher = view_dispatcher_alloc();
     view_dispatcher_set_event_callback_context(app->view_dispatcher, app);
@@ -101,6 +102,7 @@ static void app_free(App* app) {
 
     view_dispatcher_free(app->view_dispatcher);
     scene_manager_free(app->scene_manager);
+    furi_record_close(RECORD_GUI);
 
     free(app);
 }
@@ -109,8 +111,7 @@ int32_t unihd_card_app(void* p) {
     UNUSED(p);
     App* app = app_alloc();
 
-    Gui* gui = furi_record_open(RECORD_GUI);
-    view_dispatcher_attach_to_gui(app->view_dispatcher, gui, ViewDispatcherTypeFullscreen);
+    view_dispatcher_attach_to_gui(app->view_dispatcher, app->gui, ViewDispatcherTypeFullscreen);
 
     scene_manager_next_scene(app->scene_manager, UniHdSceneMainMenu);
     view_dispatcher_run(app->view_dispatcher);

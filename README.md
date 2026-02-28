@@ -1,35 +1,7 @@
 # UniHD Card
 
-This is a **Flipper Zero app** for Uni Heidelberg student cards, adapted for **MIFARE DESFire** workflows.
+Flipper Zero app project for Uni Heidelberg DESFire student cards.
 
-## What it does
+The current implementation is a production-quality DESFire reader/inspector app (live read + `.nfc` dump loading) with a multi-scene UI and Flipper App Catalog metadata.
 
-- Reads a DESFire card directly on-device (`Read card`).
-- Loads previously saved `.nfc` dumps (`Load dump`).
-- Shows student-useful technical data quickly:
-  - UID
-  - ATQA / SAK
-  - ATS TL/T0
-  - DESFire HW/SW version bytes
-  - Number of DESFire applications
-  - Free memory field (if present)
-
-## Build
-
-Use `ufbt` in this folder:
-
-```bash
-ufbt
-```
-
-Install with:
-
-```bash
-ufbt launch
-```
-
-## Notes
-
-- This app is read-only.
-- It depends on Flipper firmware NFC support for `NfcProtocolMfDesfire`.
-- Heidelberg-specific semantic decoding (e.g., student number from app/file payload) requires known AIDs/file layouts and authorization.
+See full app docs in [`unihd_flipper_app/README.md`](unihd_flipper_app/README.md).
