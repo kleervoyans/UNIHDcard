@@ -16,7 +16,7 @@ App(
     stack_size=4 * 1024,
     fap_description="Read Uni Heidelberg DESFire student cards and show card metadata.",
     fap_category="NFC",
-    fap_version="0.1.0",
-    fap_author="Local migration from UDECard",
-    fap_weburl="https://github.com/hahnworks/UDECard",
+    fap_version="0.2.0",
+    fap_author="UniHD Card contributors",
+    fap_weburl="https://github.com/hahnworks/UNIHDcard",
 )
